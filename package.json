@@ -10,13 +10,14 @@
 		"messaging"
 	],
 	"license": "MIT",
-	"homepage": "",
+	"homepage": "https://github.com/nick-wati/n8n-nodes-wati",
 	"author": {
-		"name": "nliang"
+		"name": "WATI",
+		"url": "https://www.wati.io"
 	},
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "https://github.com/nick-wati/n8n-nodes-wati.git"
 	},
 	"main": "index.js",
 	"scripts": {
