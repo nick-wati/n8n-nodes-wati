@@ -28,8 +28,8 @@ You need a Wati account to use this node. To set up credentials:
 
 #### Message
 - **Send Text Message** — Send a text message to an active WhatsApp conversation (within 24h window)
-- **Send Interactive Buttons** — Send an interactive button message
-- **Send Interactive List** — Send an interactive list message
+- **Send Button Message** — Send a message with interactive buttons
+- **Send List Message** — Send a message with a selectable list
 - **Get Messages** — Retrieve messages for a conversation by conversation ID
 
 #### Template Message

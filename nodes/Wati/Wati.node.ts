@@ -89,18 +89,18 @@ export class Wati implements INodeType {
 						action: 'Send a text message',
 					},
 					{
-						name: 'Send Interactive Buttons',
-						value: 'sendInteractiveButtons',
-						description:
-							'Send an interactive button message',
-						action: 'Send interactive buttons',
+					name: 'Send Button Message',
+					value: 'sendInteractiveButtons',
+					description:
+						'Send a message with interactive buttons',
+					action: 'Send a button message',
 					},
 					{
-						name: 'Send Interactive List',
-						value: 'sendInteractiveList',
-						description:
-							'Send an interactive list message',
-						action: 'Send interactive list',
+					name: 'Send List Message',
+					value: 'sendInteractiveList',
+					description:
+						'Send a message with a selectable list',
+					action: 'Send a list message',
 					},
 					{
 						name: 'Get Messages',
