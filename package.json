@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-wati",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "n8n community node for Wati — WhatsApp Business API automation. Send & receive WhatsApp messages, manage templates, contacts, and webhooks.",
 	"keywords": [
 		"n8n-community-node-package",
@@ -22,6 +22,7 @@
 	"homepage": "https://github.com/nick-wati/n8n-nodes-wati",
 	"author": {
 		"name": "Wati",
+		"email": "naiqiao@clare.ai",
 		"url": "https://www.wati.io"
 	},
 	"repository": {
