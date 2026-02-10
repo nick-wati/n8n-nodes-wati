@@ -6,7 +6,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 	IHttpRequestMethods,
-	IRequestOptions,
+	IHttpRequestOptions,
 } from 'n8n-workflow';
 
 /**
@@ -510,9 +510,9 @@ export class Wati implements INodeType {
 							i,
 						) as string;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/conversations/messages/text`,
+							url: `${baseUrl}/api/ext/v3/conversations/messages/text`,
 							headers: {
 								'Content-Type': 'application/json',
 							},
@@ -520,11 +520,10 @@ export class Wati implements INodeType {
 								target,
 								text: messageText,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -555,9 +554,9 @@ export class Wati implements INodeType {
 							);
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
+							url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
 							headers: {
 								'Content-Type': 'application/json',
 							},
@@ -566,11 +565,10 @@ export class Wati implements INodeType {
 								type: 'buttons',
 								button_message: buttonMessage,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -599,9 +597,9 @@ export class Wati implements INodeType {
 							);
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
+							url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
 							headers: {
 								'Content-Type': 'application/json',
 							},
@@ -610,11 +608,10 @@ export class Wati implements INodeType {
 								type: 'list',
 								list_message: listMessage,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -635,18 +632,17 @@ export class Wati implements INodeType {
 							1,
 						) as number;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/conversations/${encodeURIComponent(conversationId)}/messages`,
+							url: `${baseUrl}/api/ext/v3/conversations/${encodeURIComponent(conversationId)}/messages`,
 							qs: {
 								pageSize,
 								pageNumber,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -689,9 +685,9 @@ export class Wati implements INodeType {
 							);
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/messageTemplates/send`,
+							url: `${baseUrl}/api/ext/v3/messageTemplates/send`,
 							headers: {
 								'Content-Type': 'application/json',
 							},
@@ -700,11 +696,10 @@ export class Wati implements INodeType {
 								broadcast_name: broadcastName,
 								recipients,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -716,17 +711,16 @@ export class Wati implements INodeType {
 							20,
 						) as number;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/messageTemplates`,
+							url: `${baseUrl}/api/ext/v3/messageTemplates`,
 							qs: {
 								pageSize,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -750,18 +744,17 @@ export class Wati implements INodeType {
 							1,
 						) as number;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/contacts`,
+							url: `${baseUrl}/api/ext/v3/contacts`,
 							qs: {
 								pageSize,
 								pageNumber,
 							},
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -772,14 +765,13 @@ export class Wati implements INodeType {
 							i,
 						) as string;
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/contacts/${encodeURIComponent(phoneNumber)}`,
-							json: true,
+							url: `${baseUrl}/api/ext/v3/contacts/${encodeURIComponent(phoneNumber)}`,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
@@ -824,18 +816,17 @@ export class Wati implements INodeType {
 							body.custom_params = customParams;
 						}
 
-						const options: IRequestOptions = {
+						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
-							uri: `${baseUrl}/api/ext/v3/contacts`,
+							url: `${baseUrl}/api/ext/v3/contacts`,
 							headers: {
 								'Content-Type': 'application/json',
 							},
 							body,
-							json: true,
 						};
 
 						responseData =
-							(await this.helpers.requestWithAuthentication.call(
+							(await this.helpers.httpRequestWithAuthentication.call(
 								this,
 								'watiApi',
 								options,
