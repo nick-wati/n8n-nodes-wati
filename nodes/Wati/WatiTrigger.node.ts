@@ -9,16 +9,16 @@ import {
 
 export class WatiTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'WATI Trigger',
+		displayName: 'Wati Trigger',
 		name: 'watiTrigger',
 		icon: 'file:wati.svg',
 		group: ['trigger'],
 		version: 1,
 		subtitle: '={{$parameter["event"]}}',
 		description:
-			'Trigger workflow on WATI webhook events (incoming messages, status updates). Configure the webhook URL in WATI Dashboard → Webhooks.',
+			'Trigger workflow on Wati webhook events (incoming messages, status updates). Configure the webhook URL in Wati Dashboard → Webhooks.',
 		defaults: {
-			name: 'WATI Trigger',
+			name: 'Wati Trigger',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -45,7 +45,7 @@ export class WatiTrigger implements INodeType {
 					{
 						name: 'All Events',
 						value: 'all',
-						description: 'Trigger on any WATI webhook event',
+						description: 'Trigger on any Wati webhook event',
 					},
 					{
 						name: 'Message Received',
@@ -98,18 +98,18 @@ export class WatiTrigger implements INodeType {
 	webhookMethods = {
 		default: {
 			async checkExists(this: IHookFunctions): Promise<boolean> {
-				// WATI webhooks are configured in WATI Dashboard → Settings → Webhooks.
-				// The user must manually set the n8n webhook URL in WATI dashboard.
-				// This node just provides the endpoint that WATI will POST to.
+				// Wati webhooks are configured in Wati Dashboard → Settings → Webhooks.
+				// The user must manually set the n8n webhook URL in Wati dashboard.
+				// This node just provides the endpoint that Wati will POST to.
 				return true;
 			},
 			async create(this: IHookFunctions): Promise<boolean> {
-				// Webhook creation is done manually in WATI Dashboard
-				// or via the WATI API (POST /api/v3/webhooks/create).
+				// Webhook creation is done manually in Wati Dashboard
+				// or via the Wati API (POST /api/v3/webhooks/create).
 				return true;
 			},
 			async delete(this: IHookFunctions): Promise<boolean> {
-				// Webhook deletion is done manually in WATI Dashboard
+				// Webhook deletion is done manually in Wati Dashboard
 				return true;
 			},
 		},
@@ -119,8 +119,8 @@ export class WatiTrigger implements INodeType {
 		const body = this.getBodyData();
 		const event = this.getNodeParameter('event') as string;
 
-		// Map WATI webhook event type keys to our filter values.
-		// WATI sends different event type strings depending on the webhook type.
+		// Map Wati webhook event type keys to our filter values.
+		// Wati sends different event type strings depending on the webhook type.
 		const eventTypeMap: Record<string, string> = {
 			whatsappMessageReceived: 'messageReceived',
 			newContactMessage: 'newContactMessage',

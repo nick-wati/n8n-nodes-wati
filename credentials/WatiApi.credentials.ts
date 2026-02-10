@@ -7,7 +7,7 @@ import {
 
 export class WatiApi implements ICredentialType {
 	name = 'watiApi';
-	displayName = 'WATI API';
+	displayName = 'Wati API';
 	documentationUrl = 'https://docs.wati.io/reference/introduction';
 	properties: INodeProperties[] = [
 		{
@@ -17,7 +17,7 @@ export class WatiApi implements ICredentialType {
 			default: '',
 			placeholder: 'https://live-mt-server.wati.io/123456',
 			description:
-				'The API endpoint URL from your WATI Dashboard → API Docs. Include the tenant ID (e.g. https://live-mt-server.wati.io/123456). The base URL will be derived automatically.',
+				'The API endpoint URL from your Wati Dashboard → API Docs. Include the tenant ID (e.g. https://live-mt-server.wati.io/123456). The base URL will be derived automatically.',
 			required: true,
 		},
 		{
@@ -27,7 +27,7 @@ export class WatiApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			description:
-				'Bearer token for WATI API authentication. Find it in WATI Dashboard → API Docs.',
+				'Bearer token for Wati API authentication. Find it in Wati Dashboard → API Docs.',
 			required: true,
 		},
 	];

@@ -10,7 +10,7 @@ import {
 } from 'n8n-workflow';
 
 /**
- * Derive the API base URL from the WATI dashboard URL.
+ * Derive the API base URL from the Wati dashboard URL.
  * Dashboard URL format: https://live-mt-server.wati.io/123456
  * API base URL format:  https://live-mt-server.wati.io
  */
@@ -22,16 +22,16 @@ function getApiBaseUrl(apiUrl: string): string {
 
 export class Wati implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'WATI',
+		displayName: 'Wati',
 		name: 'wati',
 		icon: 'file:wati.svg',
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
-			'Send and receive WhatsApp messages via WATI API',
+			'Send and receive WhatsApp messages via Wati API',
 		defaults: {
-			name: 'WATI',
+			name: 'Wati',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -288,7 +288,7 @@ export class Wati implements INodeType {
 				default: '',
 				placeholder: '65b73810e2bd04...',
 				description:
-					'The conversation ID. You can find this in the response of a send message operation or from WATI dashboard.',
+					'The conversation ID. You can find this in the response of a send message operation or from Wati dashboard.',
 				displayOptions: {
 					show: {
 						resource: ['message'],
