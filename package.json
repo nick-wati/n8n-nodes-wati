@@ -1,0 +1,55 @@
+{
+	"name": "n8n-nodes-wati",
+	"version": "0.1.0",
+	"description": "n8n node for WATI (WhatsApp Team Inbox) API - Send and receive WhatsApp messages",
+	"keywords": [
+		"n8n-community-node-package",
+		"n8n",
+		"wati",
+		"whatsapp",
+		"messaging"
+	],
+	"license": "MIT",
+	"homepage": "",
+	"author": {
+		"name": "nliang"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc && gulp build:icons",
+		"dev": "tsc --watch",
+		"format": "prettier nodes credentials --write",
+		"lint": "eslint nodes credentials package.json",
+		"lintfix": "eslint nodes credentials package.json --fix",
+		"prepublishOnly": "npm run build"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [
+			"dist/credentials/WatiApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Wati/Wati.node.js",
+			"dist/nodes/Wati/WatiTrigger.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/node": "^25.2.2",
+		"@typescript-eslint/parser": "^7.0.0",
+		"eslint": "^8.56.0",
+		"gulp": "^5.0.1",
+		"n8n-workflow": "^1.120.8",
+		"prettier": "^3.2.0",
+		"typescript": "^5.9.3"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
