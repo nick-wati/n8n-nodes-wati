@@ -17,7 +17,7 @@ export class WatiApi implements ICredentialType {
 			default: '',
 			placeholder: 'https://live-mt-server.wati.io/123456',
 			description:
-				'The API endpoint URL from your WATI Dashboard → API Docs. Include the tenant ID (e.g. https://live-mt-server.wati.io/123456). The V3 base URL will be derived automatically.',
+				'The API endpoint URL from your WATI Dashboard → API Docs. Include the tenant ID (e.g. https://live-mt-server.wati.io/123456). The base URL will be derived automatically.',
 			required: true,
 		},
 		{

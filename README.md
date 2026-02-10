@@ -1,6 +1,6 @@
 # n8n-nodes-wati
 
-This is an [n8n](https://n8n.io/) community node for [WATI](https://www.wati.io/) (WhatsApp Team Inbox). It lets you automate WhatsApp messaging workflows using the WATI V3 API.
+This is an [n8n](https://n8n.io/) community node for [WATI](https://www.wati.io/) (WhatsApp Team Inbox). It lets you automate WhatsApp messaging workflows using the WATI API.
 
 [WATI](https://www.wati.io/) is a WhatsApp Business API solution that enables businesses to communicate with customers at scale through WhatsApp.
 
@@ -44,10 +44,6 @@ You need a WATI account to use this node. To set up credentials:
 ### WATI Trigger
 
 - **Webhook Trigger** — Receive incoming messages and status updates via webhook
-
-## API Version
-
-This node exclusively supports the **WATI V3 API** (latest).
 
 ## Resources
 

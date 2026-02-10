@@ -10,11 +10,11 @@ import {
 } from 'n8n-workflow';
 
 /**
- * Derive the V3 base URL from the WATI dashboard URL.
- * Dashboard URL format: https://live-mt-server.wati.io/200055
- * V3 base URL format:   https://live-mt-server.wati.io
+ * Derive the API base URL from the WATI dashboard URL.
+ * Dashboard URL format: https://live-mt-server.wati.io/123456
+ * API base URL format:  https://live-mt-server.wati.io
  */
-function getV3BaseUrl(apiUrl: string): string {
+function getApiBaseUrl(apiUrl: string): string {
 	const cleaned = apiUrl.replace(/\/+$/, '');
 	// Strip trailing tenant ID (numeric path segment)
 	return cleaned.replace(/\/\d+$/, '');
@@ -29,7 +29,7 @@ export class Wati implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
-			'Send and receive WhatsApp messages via WATI V3 API',
+			'Send and receive WhatsApp messages via WATI API',
 		defaults: {
 			name: 'WATI',
 		},
@@ -490,7 +490,7 @@ export class Wati implements INodeType {
 		const credentials = await this.getCredentials('watiApi');
 
 		const apiUrl = credentials.apiUrl as string;
-		const baseUrl = getV3BaseUrl(apiUrl);
+		const baseUrl = getApiBaseUrl(apiUrl);
 
 		for (let i = 0; i < items.length; i++) {
 			try {

@@ -1,7 +1,7 @@
 {
 	"name": "n8n-nodes-wati",
-	"version": "0.1.1",
-	"description": "n8n community node for WATI — WhatsApp Business API automation. Send & receive WhatsApp messages, manage templates, contacts, and webhooks via WATI V3 API.",
+	"version": "0.1.2",
+	"description": "n8n community node for WATI — WhatsApp Business API automation. Send & receive WhatsApp messages, manage templates, contacts, and webhooks.",
 	"keywords": [
 		"n8n-community-node-package",
 		"n8n",
