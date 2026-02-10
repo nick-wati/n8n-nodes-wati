@@ -1,13 +1,22 @@
 {
 	"name": "n8n-nodes-wati",
-	"version": "0.1.0",
-	"description": "n8n node for WATI (WhatsApp Team Inbox) API - Send and receive WhatsApp messages",
+	"version": "0.1.1",
+	"description": "n8n community node for WATI — WhatsApp Business API automation. Send & receive WhatsApp messages, manage templates, contacts, and webhooks via WATI V3 API.",
 	"keywords": [
 		"n8n-community-node-package",
 		"n8n",
 		"wati",
 		"whatsapp",
-		"messaging"
+		"whatsapp business",
+		"whatsapp business api",
+		"whatsapp api",
+		"whatsapp messaging",
+		"whatsapp automation",
+		"messaging",
+		"chat",
+		"chatbot",
+		"customer engagement",
+		"team inbox"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/nick-wati/n8n-nodes-wati",
