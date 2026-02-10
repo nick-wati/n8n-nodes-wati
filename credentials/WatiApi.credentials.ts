@@ -5,6 +5,9 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { version } = require('../../package.json') as { version: string };
+
 export class WatiApi implements ICredentialType {
 	name = 'watiApi';
 	displayName = 'Wati API';
@@ -37,6 +40,7 @@ export class WatiApi implements ICredentialType {
 		properties: {
 			headers: {
 				Authorization: '={{"Bearer " + $credentials.accessToken}}',
+				'User-Agent': `n8n-nodes-wati/${version}`,
 			},
 		},
 	};
