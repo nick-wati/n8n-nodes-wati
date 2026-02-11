@@ -840,11 +840,13 @@ export class Wati implements INodeType {
 						returnData.push(
 							...responseData.map((item) => ({
 								json: item as IDataObject,
+								pairedItem: { item: i },
 							})),
 						);
 					} else {
 						returnData.push({
 							json: responseData as IDataObject,
+							pairedItem: { item: i },
 						});
 					}
 				}
@@ -854,6 +856,7 @@ export class Wati implements INodeType {
 						json: {
 							error: (error as Error).message,
 						},
+						pairedItem: { item: i },
 					});
 					continue;
 				}
