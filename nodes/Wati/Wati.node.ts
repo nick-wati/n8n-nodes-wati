@@ -245,14 +245,12 @@ export class Wati implements INodeType {
 				},
 			},
 		{
-			displayName: 'Buttons (JSON)',
-			name: 'buttonsJson',
-			type: 'json',
-			required: true,
-			default:
-				'{\n  "body": "Choose an option",\n  "buttons": [\n    { "text": "Yes" },\n    { "text": "No" }\n  ]\n}',
-			description:
-				'The button_message JSON object. "body" is a plain string, "buttons" is an array of {text} objects (max 3). Optional: "header" as {"type":"Text","text":"..."}, "footer" as a string.',
+				displayName: 'Header Text',
+				name: 'buttonHeaderText',
+				type: 'string',
+				default: '',
+				placeholder: 'Welcome',
+				description: 'Optional header text shown above the body',
 				displayOptions: {
 					show: {
 						resource: ['message'],
@@ -260,23 +258,196 @@ export class Wati implements INodeType {
 					},
 				},
 			},
+			{
+				displayName: 'Footer Text',
+				name: 'buttonFooterText',
+				type: 'string',
+				default: '',
+				placeholder: 'Powered by Wati',
+				description: 'Optional footer text shown below the buttons',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveButtons'],
+					},
+				},
+			},
+			{
+				displayName: 'Buttons',
+				name: 'buttons',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				required: true,
+				default: {},
+				placeholder: 'Add Button',
+				description: 'Up to 3 buttons for the user to tap',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveButtons'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Button',
+						name: 'buttonValues',
+						values: [
+							{
+								displayName: 'Text',
+								name: 'text',
+								type: 'string',
+								default: '',
+								placeholder: 'Yes',
+								description: 'Button label text',
+							},
+						],
+					},
+				],
+			},
 
 			// --- Send Interactive List ---
-		{
-			displayName: 'List Message (JSON)',
-			name: 'listJson',
-			type: 'json',
-			required: true,
-			default:
-				'{\n  "body": "Please select:",\n  "button_text": "Select",\n  "sections": [\n    {\n      "title": "Section 1",\n      "rows": [\n        { "id": "1", "title": "Option 1", "description": "Desc 1" },\n        { "id": "2", "title": "Option 2", "description": "Desc 2" }\n      ]\n    }\n  ]\n}',
-			description:
-				'The list_message JSON object. "body" is a plain string, "button_text" is the button label, "sections" is the array of section objects. Optional: "header" and "footer" as strings.',
+			{
+				displayName: 'Body Text',
+				name: 'listBodyText',
+				type: 'string',
+				typeOptions: { rows: 4 },
+				required: true,
+				default: '',
+				placeholder: 'Please select an option:',
+				description: 'The body text of the list message',
 				displayOptions: {
 					show: {
 						resource: ['message'],
 						operation: ['sendInteractiveList'],
 					},
 				},
+			},
+			{
+				displayName: 'Button Text',
+				name: 'listButtonText',
+				type: 'string',
+				required: true,
+				default: 'Select',
+				placeholder: 'Select',
+				description:
+					'The label on the button that opens the list',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveList'],
+					},
+				},
+			},
+			{
+				displayName: 'Header Text',
+				name: 'listHeaderText',
+				type: 'string',
+				default: '',
+				placeholder: 'Menu',
+				description: 'Optional header text shown above the body',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveList'],
+					},
+				},
+			},
+			{
+				displayName: 'Footer Text',
+				name: 'listFooterText',
+				type: 'string',
+				default: '',
+				placeholder: 'Powered by Wati',
+				description: 'Optional footer text shown below the list',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveList'],
+					},
+				},
+			},
+			{
+				displayName: 'Sections',
+				name: 'listSections',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				required: true,
+				default: {},
+				placeholder: 'Add Section',
+				description: 'Sections of the list (max 10)',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['sendInteractiveList'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Section',
+						name: 'sectionValues',
+						values: [
+							{
+								displayName: 'Title',
+								name: 'title',
+								type: 'string',
+								default: '',
+								placeholder: 'Section 1',
+								description: 'Section heading',
+							},
+							{
+								displayName: 'Rows',
+								name: 'rows',
+								type: 'fixedCollection',
+								typeOptions: {
+									multipleValues: true,
+								},
+								default: {},
+								placeholder: 'Add Row',
+								description:
+									'Selectable rows within this section (max 10)',
+								options: [
+									{
+										displayName: 'Row',
+										name: 'rowValues',
+										values: [
+											{
+												displayName: 'ID',
+												name: 'id',
+												type: 'string',
+												default: '',
+												placeholder: '1',
+												description:
+													'Unique identifier returned when user selects this row',
+											},
+											{
+												displayName: 'Title',
+												name: 'title',
+												type: 'string',
+												default: '',
+												placeholder: 'Option 1',
+												description:
+													'Row title (max 24 characters)',
+											},
+											{
+												displayName: 'Description',
+												name: 'description',
+												type: 'string',
+												default: '',
+												placeholder: 'Description of option 1',
+												description:
+													'Optional row description (max 72 characters)',
+											},
+										],
+									},
+								],
+							},
+						],
+					},
+				],
 			},
 
 			// --- Get Messages ---
@@ -358,20 +529,63 @@ export class Wati implements INodeType {
 				},
 			},
 			{
-			displayName: 'Receivers (JSON)',
-			name: 'recipientsJson',
-			type: 'json',
-			required: true,
-			default:
-				'[\n  {\n    "whatsappNumber": "14155552671",\n    "customParams": [\n      { "name": "name", "value": "John" }\n    ]\n  }\n]',
-			description:
-				'JSON array of receivers. Each must have whatsappNumber (with country code) and optionally customParams array with {name, value} objects for template variables.',
+				displayName: 'WhatsApp Number',
+				name: 'whatsappNumber',
+				type: 'string',
+				required: true,
+				default: '',
+				placeholder: '919920842422',
+				description:
+					'Recipient phone number with country code (no + or spaces)',
 				displayOptions: {
 					show: {
 						resource: ['templateMessage'],
 						operation: ['sendTemplateMessage'],
 					},
 				},
+			},
+			{
+				displayName: 'Template Parameters',
+				name: 'customParams',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Parameter',
+				description:
+					'Custom parameter values to fill template variables',
+				displayOptions: {
+					show: {
+						resource: ['templateMessage'],
+						operation: ['sendTemplateMessage'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Parameter',
+						name: 'parameter',
+						values: [
+							{
+								displayName: 'Name',
+								name: 'name',
+								type: 'string',
+								default: '',
+								placeholder: 'name',
+								description:
+									'Parameter name as defined in the template',
+							},
+							{
+								displayName: 'Value',
+								name: 'value',
+								type: 'string',
+								default: '',
+								placeholder: 'John',
+								description: 'Value for this parameter',
+							},
+						],
+					},
+				],
 			},
 			{
 				displayName: 'Page Size',
@@ -463,19 +677,47 @@ export class Wati implements INodeType {
 					},
 				},
 			},
-			{
-				displayName: 'Custom Parameters (JSON)',
-				name: 'customParamsJson',
-				type: 'json',
-				default: '[]',
+		{
+				displayName: 'Custom Parameters',
+				name: 'contactCustomParams',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Parameter',
 				description:
-					'Optional JSON array of custom parameters, e.g. [{"name":"company","value":"Acme"}]',
+					'Optional custom attribute values for the contact',
 				displayOptions: {
 					show: {
 						resource: ['contact'],
 						operation: ['addContact'],
 					},
 				},
+				options: [
+					{
+						displayName: 'Parameter',
+						name: 'parameter',
+						values: [
+							{
+								displayName: 'Name',
+								name: 'name',
+								type: 'string',
+								default: '',
+								placeholder: 'company',
+								description: 'Attribute name',
+							},
+							{
+								displayName: 'Value',
+								name: 'value',
+								type: 'string',
+								default: '',
+								placeholder: 'Acme',
+								description: 'Attribute value',
+							},
+						],
+					},
+				],
 			},
 		],
 	};
@@ -528,44 +770,65 @@ export class Wati implements INodeType {
 								'watiApi',
 								options,
 							)) as IDataObject;
-					} else if (
-						operation === 'sendInteractiveButtons'
-					) {
-						const target = this.getNodeParameter(
-							'target',
-							i,
-						) as string;
-						const buttonsJsonRaw = this.getNodeParameter(
-							'buttonsJson',
-							i,
-						) as string;
+				} else if (
+					operation === 'sendInteractiveButtons'
+				) {
+					const target = this.getNodeParameter(
+						'target',
+						i,
+					) as string;
+					const bodyText = this.getNodeParameter(
+						'bodyText',
+						i,
+					) as string;
+					const headerText = this.getNodeParameter(
+						'buttonHeaderText',
+						i,
+						'',
+					) as string;
+					const footerText = this.getNodeParameter(
+						'buttonFooterText',
+						i,
+						'',
+					) as string;
+					const buttonsRaw = this.getNodeParameter(
+						'buttons',
+						i,
+						{},
+					) as IDataObject;
 
-						let buttonMessage: unknown;
-						try {
-							buttonMessage =
-								typeof buttonsJsonRaw === 'string'
-									? JSON.parse(buttonsJsonRaw)
-									: buttonsJsonRaw;
-						} catch {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Invalid JSON in Buttons field.',
-								{ itemIndex: i },
-							);
-						}
+					const buttons =
+						((buttonsRaw.buttonValues as IDataObject[]) ?? []).map(
+							(b) => ({ text: b.text as string }),
+						);
 
-						const options: IHttpRequestOptions = {
-							method: 'POST' as IHttpRequestMethods,
-							url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: {
-								target,
-								type: 'buttons',
-								button_message: buttonMessage,
-							},
+					const buttonMessage: IDataObject = {
+						body: bodyText,
+						buttons,
+					};
+
+					if (headerText) {
+						buttonMessage.header = {
+							type: 'Text',
+							text: headerText,
 						};
+					}
+					if (footerText) {
+						buttonMessage.footer = footerText;
+					}
+
+					const options: IHttpRequestOptions = {
+						method: 'POST' as IHttpRequestMethods,
+						url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: {
+							target,
+							type: 'buttons',
+							button_message: buttonMessage,
+						},
+					};
 
 						responseData =
 							(await this.helpers.httpRequestWithAuthentication.call(
@@ -573,42 +836,81 @@ export class Wati implements INodeType {
 								'watiApi',
 								options,
 							)) as IDataObject;
-					} else if (operation === 'sendInteractiveList') {
-						const target = this.getNodeParameter(
-							'target',
-							i,
-						) as string;
-						const listJsonRaw = this.getNodeParameter(
-							'listJson',
-							i,
-						) as string;
+				} else if (operation === 'sendInteractiveList') {
+					const target = this.getNodeParameter(
+						'target',
+						i,
+					) as string;
+					const listBodyText = this.getNodeParameter(
+						'listBodyText',
+						i,
+					) as string;
+					const listButtonText = this.getNodeParameter(
+						'listButtonText',
+						i,
+					) as string;
+					const listHeaderText = this.getNodeParameter(
+						'listHeaderText',
+						i,
+						'',
+					) as string;
+					const listFooterText = this.getNodeParameter(
+						'listFooterText',
+						i,
+						'',
+					) as string;
+					const sectionsRaw = this.getNodeParameter(
+						'listSections',
+						i,
+						{},
+					) as IDataObject;
 
-						let listMessage: unknown;
-						try {
-							listMessage =
-								typeof listJsonRaw === 'string'
-									? JSON.parse(listJsonRaw)
-									: listJsonRaw;
-						} catch {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Invalid JSON in List Message field.',
-								{ itemIndex: i },
-							);
-						}
+					const sections =
+						((sectionsRaw.sectionValues as IDataObject[]) ?? []).map(
+							(section) => {
+								const rowsRaw = (section.rows as IDataObject) ?? {};
+								const rows =
+									((rowsRaw.rowValues as IDataObject[]) ?? []).map(
+										(row) => ({
+											id: row.id as string,
+											title: row.title as string,
+											...(row.description
+												? { description: row.description as string }
+												: {}),
+										}),
+									);
+								return {
+									title: section.title as string,
+									rows,
+								};
+							},
+						);
 
-						const options: IHttpRequestOptions = {
-							method: 'POST' as IHttpRequestMethods,
-							url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: {
-								target,
-								type: 'list',
-								list_message: listMessage,
-							},
-						};
+					const listMessage: IDataObject = {
+						body: listBodyText,
+						button_text: listButtonText,
+						sections,
+					};
+
+					if (listHeaderText) {
+						listMessage.header = listHeaderText;
+					}
+					if (listFooterText) {
+						listMessage.footer = listFooterText;
+					}
+
+					const options: IHttpRequestOptions = {
+						method: 'POST' as IHttpRequestMethods,
+						url: `${baseUrl}/api/ext/v3/conversations/messages/interactive`,
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: {
+							target,
+							type: 'list',
+							list_message: listMessage,
+						},
+					};
 
 						responseData =
 							(await this.helpers.httpRequestWithAuthentication.call(
@@ -663,27 +965,28 @@ export class Wati implements INodeType {
 							'broadcastName',
 							i,
 						) as string;
-						const recipientsJsonRaw =
-							this.getNodeParameter(
-								'recipientsJson',
-								i,
-							) as string;
+						const whatsappNumber = this.getNodeParameter(
+							'whatsappNumber',
+							i,
+						) as string;
+						const customParamsRaw = this.getNodeParameter(
+							'customParams',
+							i,
+							{},
+						) as IDataObject;
 
-						let recipients: unknown[];
-						try {
-							recipients =
-								typeof recipientsJsonRaw === 'string'
-									? (JSON.parse(
-											recipientsJsonRaw,
-										) as unknown[])
-									: (recipientsJsonRaw as unknown as unknown[]);
-						} catch {
-							throw new NodeOperationError(
-								this.getNode(),
-								'Invalid JSON in Recipients field.',
-								{ itemIndex: i },
+						const customParams =
+							((customParamsRaw.parameter as IDataObject[]) ?? []).map(
+								(p) => ({
+									name: p.name as string,
+									value: p.value as string,
+								}),
 							);
-						}
+
+						const receiver: IDataObject = {
+							whatsappNumber,
+							...(customParams.length > 0 && { customParams }),
+						};
 
 						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
@@ -691,11 +994,11 @@ export class Wati implements INodeType {
 							headers: {
 								'Content-Type': 'application/json',
 							},
-						body: {
-							template_name: templateName,
-							broadcast_name: broadcastName,
-							receivers: recipients,
-						},
+							body: {
+								template_name: templateName,
+								broadcast_name: broadcastName,
+								receivers: [receiver],
+							},
 						};
 
 						responseData =
@@ -776,45 +1079,37 @@ export class Wati implements INodeType {
 								'watiApi',
 								options,
 							)) as IDataObject;
-					} else if (operation === 'addContact') {
-						const whatsappNumber = this.getNodeParameter(
-							'whatsappNumber',
-							i,
-						) as string;
-						const contactName = this.getNodeParameter(
-							'contactName',
-							i,
-						) as string;
-						const customParamsJsonRaw =
-							this.getNodeParameter(
-								'customParamsJson',
-								i,
-								'[]',
-							) as string;
+				} else if (operation === 'addContact') {
+					const whatsappNumber = this.getNodeParameter(
+						'whatsappNumber',
+						i,
+					) as string;
+					const contactName = this.getNodeParameter(
+						'contactName',
+						i,
+					) as string;
+					const contactCustomParamsRaw = this.getNodeParameter(
+						'contactCustomParams',
+						i,
+						{},
+					) as IDataObject;
 
-						let customParams: unknown[];
-						try {
-							customParams =
-								typeof customParamsJsonRaw === 'string'
-									? (JSON.parse(
-											customParamsJsonRaw,
-										) as unknown[])
-									: (customParamsJsonRaw as unknown as unknown[]);
-						} catch {
-							customParams = [];
-						}
+					const customParams =
+						((contactCustomParamsRaw.parameter as IDataObject[]) ?? []).map(
+							(p) => ({
+								name: p.name as string,
+								value: p.value as string,
+							}),
+						);
 
-						const body: IDataObject = {
-							whatsapp_number: whatsappNumber,
-							name: contactName,
-						};
+					const body: IDataObject = {
+						whatsapp_number: whatsappNumber,
+						name: contactName,
+					};
 
-						if (
-							Array.isArray(customParams) &&
-							customParams.length > 0
-						) {
-							body.custom_params = customParams;
-						}
+					if (customParams.length > 0) {
+						body.custom_params = customParams;
+					}
 
 						const options: IHttpRequestOptions = {
 							method: 'POST' as IHttpRequestMethods,
