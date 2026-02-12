@@ -358,14 +358,14 @@ export class Wati implements INodeType {
 				},
 			},
 			{
-				displayName: 'Recipients (JSON)',
-				name: 'recipientsJson',
-				type: 'json',
-				required: true,
-				default:
-					'[\n  {\n    "whatsapp_number": "14155552671",\n    "custom_params": [\n      { "name": "name", "value": "John" }\n    ]\n  }\n]',
-				description:
-					'JSON array of recipients. Each must have whatsapp_number and optionally custom_params.',
+			displayName: 'Receivers (JSON)',
+			name: 'recipientsJson',
+			type: 'json',
+			required: true,
+			default:
+				'[\n  {\n    "whatsappNumber": "14155552671",\n    "customParams": [\n      { "name": "name", "value": "John" }\n    ]\n  }\n]',
+			description:
+				'JSON array of receivers. Each must have whatsappNumber (with country code) and optionally customParams array with {name, value} objects for template variables.',
 				displayOptions: {
 					show: {
 						resource: ['templateMessage'],
@@ -691,11 +691,11 @@ export class Wati implements INodeType {
 							headers: {
 								'Content-Type': 'application/json',
 							},
-							body: {
-								template_name: templateName,
-								broadcast_name: broadcastName,
-								recipients,
-							},
+						body: {
+							template_name: templateName,
+							broadcast_name: broadcastName,
+							receivers: recipients,
+						},
 						};
 
 						responseData =
