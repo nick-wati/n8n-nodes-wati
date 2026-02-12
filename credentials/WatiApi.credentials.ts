@@ -30,7 +30,7 @@ export class WatiApi implements ICredentialType {
 			typeOptions: { password: true },
 			default: '',
 			description:
-				'Bearer token for Wati API authentication. Find it in Wati Dashboard → API Docs.',
+				'Bearer token for Wati API authentication. Find it in Wati Dashboard → API Docs. You can paste the token with or without the "Bearer " prefix.',
 			required: true,
 		},
 	];
@@ -39,7 +39,8 @@ export class WatiApi implements ICredentialType {
 		type: 'generic',
 		properties: {
 			headers: {
-				Authorization: '={{"Bearer " + $credentials.accessToken}}',
+				Authorization:
+					'={{"Bearer " + ($credentials.accessToken || "").replace(/^Bearer\\s+/i, "")}}',
 				'User-Agent': `n8n-nodes-wati/${version}`,
 			},
 		},
