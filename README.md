@@ -47,7 +47,7 @@ You need a Wati account to use this node. To set up credentials:
 
 ## Resources
 
-- [Wati API Documentation](https://docs.wati.io/reference/introduction)
+- [Sign up for Wati](https://auth.wati.io/register/?utm_source=n8n&utm_medium=referral&utm_campaign=n8n)
 - [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
 
 ## License

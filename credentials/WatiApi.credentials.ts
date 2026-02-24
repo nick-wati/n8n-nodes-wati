@@ -11,7 +11,7 @@ const { version } = require('../../package.json') as { version: string };
 export class WatiApi implements ICredentialType {
 	name = 'watiApi';
 	displayName = 'Wati API';
-	documentationUrl = 'https://docs.wati.io/reference/introduction';
+	documentationUrl = 'https://auth.wati.io/register/?utm_source=n8n&utm_medium=referral&utm_campaign=n8n';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'API Endpoint URL',
