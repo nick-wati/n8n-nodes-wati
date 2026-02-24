@@ -109,6 +109,13 @@ export class Wati implements INodeType {
 							'Get messages for a conversation by conversation ID',
 						action: 'Get messages',
 					},
+					{
+						name: 'Get Media',
+						value: 'getMedia',
+						description:
+							'Download a media file (image, video, document, etc.) by message ID',
+						action: 'Get a media file',
+					},
 				],
 				default: 'sendTextMessage',
 			},
@@ -490,6 +497,38 @@ export class Wati implements INodeType {
 					show: {
 						resource: ['message'],
 						operation: ['getMessages'],
+					},
+				},
+			},
+
+			// --- Get Media ---
+			{
+				displayName: 'Message ID',
+				name: 'mediaMessageId',
+				type: 'string',
+				required: true,
+				default: '',
+				placeholder: '69282478274a880fe782b2d9',
+				description:
+					'The message ID of the media to download. Found in the webhook payload or Get Messages response.',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['getMedia'],
+					},
+				},
+			},
+			{
+				displayName: 'Binary Property',
+				name: 'binaryPropertyName',
+				type: 'string',
+				default: 'data',
+				description:
+					'Name of the binary property to write the downloaded file to',
+				displayOptions: {
+					show: {
+						resource: ['message'],
+						operation: ['getMedia'],
 					},
 				},
 			},
@@ -949,6 +988,65 @@ export class Wati implements INodeType {
 								'watiApi',
 								options,
 							)) as IDataObject;
+					} else if (operation === 'getMedia') {
+						const messageId = this.getNodeParameter(
+							'mediaMessageId',
+							i,
+						) as string;
+						const binaryPropertyName = this.getNodeParameter(
+							'binaryPropertyName',
+							i,
+							'data',
+						) as string;
+
+						const options: IHttpRequestOptions = {
+							method: 'GET' as IHttpRequestMethods,
+							url: `${baseUrl}/api/ext/v3/conversations/messages/file/${encodeURIComponent(messageId)}`,
+							encoding: 'arraybuffer',
+							returnFullResponse: true,
+						};
+
+						const response =
+							await this.helpers.httpRequestWithAuthentication.call(
+								this,
+								'watiApi',
+								options,
+							);
+
+						const fullResponse = response as unknown as {
+							body: Buffer;
+							headers: Record<string, string>;
+						};
+
+						const contentType =
+							fullResponse.headers['content-type'] || 'application/octet-stream';
+						const contentDisposition =
+							fullResponse.headers['content-disposition'] || '';
+
+						let fileName = `${messageId}`;
+						const fileNameMatch = contentDisposition.match(
+							/filename[^;=\n]*=(?:['"]?)([^'"\n;]+)/i,
+						);
+						if (fileNameMatch?.[1]) {
+							fileName = fileNameMatch[1];
+						} else {
+							const ext = contentType.split('/')[1]?.split(';')[0] || 'bin';
+							fileName = `${messageId}.${ext}`;
+						}
+
+						const binaryData =
+							await this.helpers.prepareBinaryData(
+								Buffer.from(fullResponse.body),
+								fileName,
+								contentType,
+							);
+
+						returnData.push({
+							json: { messageId, fileName, mimeType: contentType },
+							binary: { [binaryPropertyName]: binaryData },
+							pairedItem: { item: i },
+						});
+						continue;
 					}
 				}
 

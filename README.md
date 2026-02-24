@@ -31,6 +31,7 @@ You need a Wati account to use this node. To set up credentials:
 - **Send Button Message** — Send a message with interactive buttons
 - **Send List Message** — Send a message with a selectable list
 - **Get Messages** — Retrieve messages for a conversation by conversation ID
+- **Get Media** — Download a media file (image, video, document, audio, etc.) by message ID
 
 #### Template Message
 - **Send Template Message** — Send a template message (works outside the 24h window)
