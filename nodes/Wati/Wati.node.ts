@@ -508,9 +508,9 @@ export class Wati implements INodeType {
 				type: 'string',
 				required: true,
 				default: '',
-				placeholder: '69282478274a880fe782b2d9',
+				placeholder: '699d7723250d5fdc31ecab08',
 				description:
-					'The message ID of the media to download. Found in the webhook payload or Get Messages response.',
+					'The Wati internal message ID (the "id" field, NOT the "whatsappMessageId"). Use {{ $json.id }} from a Wati Trigger or Get Messages output.',
 				displayOptions: {
 					show: {
 						resource: ['message'],
