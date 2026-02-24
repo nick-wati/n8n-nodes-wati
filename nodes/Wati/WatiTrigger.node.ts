@@ -116,12 +116,36 @@ export class WatiTrigger implements INodeType {
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		let body = this.getBodyData() as IDataObject;
+		const req = this.getRequestObject();
+		const headers = this.getHeaderData();
+		const query = this.getQueryData() as IDataObject;
 
+		let body: IDataObject = {};
+
+		// 1. Try n8n's built-in body parsing
+		try {
+			const parsed = this.getBodyData();
+			if (parsed && typeof parsed === 'object' && !Buffer.isBuffer(parsed)) {
+				body = parsed as IDataObject;
+			}
+		} catch {
+			// getBodyData() can throw if body parsing failed upstream
+		}
+
+		// 2. If body is empty, explicitly read and parse rawBody
 		if (Object.keys(body).length === 0) {
-			const req = this.getRequestObject();
+			try {
+				const readRawBody = (req as unknown as { readRawBody?: () => Promise<void> })
+					.readRawBody;
+				if (typeof readRawBody === 'function') {
+					await readRawBody();
+				}
+			} catch {
+				// Stream may already be consumed
+			}
+
 			const rawBody = (req as unknown as { rawBody?: Buffer }).rawBody;
-			if (rawBody) {
+			if (rawBody && rawBody.length > 0) {
 				try {
 					body = JSON.parse(rawBody.toString('utf-8')) as IDataObject;
 				} catch {
@@ -130,11 +154,39 @@ export class WatiTrigger implements INodeType {
 			}
 		}
 
+		// 3. If still empty, try req.body directly (may be Buffer or string)
+		if (Object.keys(body).length === 0 && req.body) {
+			if (Buffer.isBuffer(req.body)) {
+				try {
+					body = JSON.parse(req.body.toString('utf-8')) as IDataObject;
+				} catch {
+					body = { rawData: req.body.toString('utf-8') } as IDataObject;
+				}
+			} else if (typeof req.body === 'string' && req.body.length > 0) {
+				try {
+					body = JSON.parse(req.body) as IDataObject;
+				} catch {
+					body = { rawData: req.body } as IDataObject;
+				}
+			}
+		}
+
+		// 4. If body is still empty, include diagnostic info so the user can
+		//    troubleshoot (e.g. wrong webhook URL, proxy stripping body, etc.)
+		if (Object.keys(body).length === 0) {
+			body = {
+				_webhookReceived: true,
+				_bodyEmpty: true,
+				_contentType: (headers['content-type'] as string) || 'not set',
+				_method: req.method,
+				_query: query,
+			};
+		}
+
 		const event = this.getNodeParameter('event') as string;
 
-		// Map Wati webhook event type keys to our filter values.
-		// Wati sends different event type strings depending on the webhook type.
 		const eventTypeMap: Record<string, string> = {
+			message: 'messageReceived',
 			whatsappMessageReceived: 'messageReceived',
 			newContactMessage: 'newContactMessage',
 			sessionMessageSent: 'sessionMessageSent',
@@ -145,19 +197,16 @@ export class WatiTrigger implements INodeType {
 			templateMessageFailed: 'templateMessageFailed',
 		};
 
-		// If filtering by event type (not "all"), check the incoming event
 		if (event !== 'all') {
-			const bodyData = body as IDataObject;
 			const eventType =
-				(bodyData.eventType as string) ||
-				(bodyData.event as string) ||
-				(bodyData.type as string) ||
+				(body.eventType as string) ||
+				(body.event as string) ||
+				(body.type as string) ||
 				'';
 
 			const mappedEvent = eventTypeMap[eventType] || eventType;
 
 			if (mappedEvent !== event) {
-				// Event doesn't match filter — return empty to skip
 				return {
 					workflowData: [[]],
 				};
@@ -165,7 +214,7 @@ export class WatiTrigger implements INodeType {
 		}
 
 		return {
-			workflowData: [this.helpers.returnJsonArray(body as IDataObject)],
+			workflowData: [this.helpers.returnJsonArray(body)],
 		};
 	}
 }
