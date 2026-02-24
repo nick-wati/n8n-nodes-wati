@@ -116,7 +116,20 @@ export class WatiTrigger implements INodeType {
 	};
 
 	async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
-		const body = this.getBodyData();
+		let body = this.getBodyData() as IDataObject;
+
+		if (Object.keys(body).length === 0) {
+			const req = this.getRequestObject();
+			const rawBody = (req as unknown as { rawBody?: Buffer }).rawBody;
+			if (rawBody) {
+				try {
+					body = JSON.parse(rawBody.toString('utf-8')) as IDataObject;
+				} catch {
+					body = { rawData: rawBody.toString('utf-8') } as IDataObject;
+				}
+			}
+		}
+
 		const event = this.getNodeParameter('event') as string;
 
 		// Map Wati webhook event type keys to our filter values.
