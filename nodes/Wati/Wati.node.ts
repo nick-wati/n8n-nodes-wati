@@ -503,14 +503,14 @@ export class Wati implements INodeType {
 
 			// --- Get Media ---
 			{
-				displayName: 'Message ID',
-				name: 'mediaMessageId',
+				displayName: 'File URL',
+				name: 'mediaFileUrl',
 				type: 'string',
 				required: true,
 				default: '',
-				placeholder: '699d7723250d5fdc31ecab08',
+				placeholder: 'https://live-mt-server.wati.io/.../showFile?fileName=...',
 				description:
-					'The Wati internal message ID (the "id" field, NOT the "whatsappMessageId"). Use {{ $json.id }} from a Wati Trigger or Get Messages output.',
+					'The file URL from the incoming message\'s "data" field. Use {{ $json.data }} from a Wati Trigger output.',
 				displayOptions: {
 					show: {
 						resource: ['message'],
@@ -989,8 +989,8 @@ export class Wati implements INodeType {
 								options,
 							)) as IDataObject;
 					} else if (operation === 'getMedia') {
-						const messageId = this.getNodeParameter(
-							'mediaMessageId',
+						const fileUrl = this.getNodeParameter(
+							'mediaFileUrl',
 							i,
 						) as string;
 						const binaryPropertyName = this.getNodeParameter(
@@ -999,9 +999,16 @@ export class Wati implements INodeType {
 							'data',
 						) as string;
 
+						let downloadUrl: string;
+						if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
+							downloadUrl = fileUrl;
+						} else {
+							downloadUrl = `${baseUrl}/api/ext/v3/conversations/messages/file/${encodeURIComponent(fileUrl)}`;
+						}
+
 						const options: IHttpRequestOptions = {
 							method: 'GET' as IHttpRequestMethods,
-							url: `${baseUrl}/api/ext/v3/conversations/messages/file/${encodeURIComponent(messageId)}`,
+							url: downloadUrl,
 							encoding: 'arraybuffer',
 							returnFullResponse: true,
 						};
@@ -1023,15 +1030,16 @@ export class Wati implements INodeType {
 						const contentDisposition =
 							fullResponse.headers['content-disposition'] || '';
 
-						let fileName = `${messageId}`;
+						const urlPath = downloadUrl.split('/').pop()?.split('?')[0] || 'file';
+						let fileName = urlPath;
 						const fileNameMatch = contentDisposition.match(
 							/filename[^;=\n]*=(?:['"]?)([^'"\n;]+)/i,
 						);
 						if (fileNameMatch?.[1]) {
 							fileName = fileNameMatch[1];
-						} else {
+						} else if (!fileName.includes('.')) {
 							const ext = contentType.split('/')[1]?.split(';')[0] || 'bin';
-							fileName = `${messageId}.${ext}`;
+							fileName = `${fileName}.${ext}`;
 						}
 
 						const binaryData =
@@ -1042,7 +1050,7 @@ export class Wati implements INodeType {
 							);
 
 						returnData.push({
-							json: { messageId, fileName, mimeType: contentType },
+							json: { fileUrl, fileName, mimeType: contentType },
 							binary: { [binaryPropertyName]: binaryData },
 							pairedItem: { item: i },
 						});
