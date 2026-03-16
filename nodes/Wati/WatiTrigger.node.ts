@@ -16,7 +16,7 @@ export class WatiTrigger implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["event"]}}',
 		description:
-			'Trigger workflow on Wati webhook events (incoming messages, status updates). Configure the webhook URL in Wati Dashboard → Webhooks.',
+			'Trigger workflows on WhatsApp events via Wati — receive incoming messages, delivery status updates, and more.',
 		defaults: {
 			name: 'Wati Trigger',
 		},

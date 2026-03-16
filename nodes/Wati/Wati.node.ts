@@ -29,7 +29,7 @@ export class Wati implements INodeType {
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description:
-			'Send and receive WhatsApp messages via Wati API',
+			'Send WhatsApp messages, manage contacts, deliver templates, and download media via Wati API',
 		defaults: {
 			name: 'Wati',
 		},
