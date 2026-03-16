@@ -9,16 +9,16 @@ import {
 
 export class WatiTrigger implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Wati Trigger',
+		displayName: 'Wati',
 		name: 'watiTrigger',
 		icon: 'file:wati.svg',
 		group: ['trigger'],
 		version: 1,
 		subtitle: '={{$parameter["event"]}}',
 		description:
-			'Trigger workflows on WhatsApp events via Wati — receive incoming messages, delivery status updates, and more.',
+			'Trigger workflows on WhatsApp events via Wati — incoming messages, delivery updates, and more.',
 		defaults: {
-			name: 'Wati Trigger',
+			name: 'Wati',
 		},
 		inputs: [],
 		outputs: ['main'],
